@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slangs</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Slangs</div>
+        </header>
+
+        <div class="welcome-section">
+            <h2>Confused by internet slang? We got you!</h2>
+            <p class="intro">
+                From "fr fr" to "iykyk" - search all those mysterious internet expressions everyone's using. No cap, we've got the meanings you're looking for!
+            </p>
+        </div>
+
+        <div id="errorMessage" class="error-message" style="display: none; color: red;"></div>
+        <div id="successMessage" class="success-message" style="display: none; color: green;"></div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Type any slang or abbreviation...">
+                <button onclick="searchAbbreviation()">Search</button>
+            </div>
+            <div class="examples">
+                Try: fr, ngl, iykyk, tbh, ong...
+            </div>
+
+            <div id="searchResult" class="result-section" style="display: none; margin-top: 1rem; background-color: #f0f0f0; padding: 1rem; border-radius: 8px;">
+                <h3 id="resultAbbreviation"></h3>
+                <p id="resultMeaning"></p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <p class="cta-text">
+                Got the ☕ on what "sleeping on" means? Share it with the squad!
+            </p>
+            <a href="/submit" target="_blank">
+                <button class="add-button">Add Your Slang</button>
+            </a>
+        </div>
+    </div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', () => {
+        const searchInput = document.getElementById('searchInput').value.trim();
+        const searchButton = document.querySelector('.search-box button');
+        searchButton.disabled = !searchInput; 
+    });
+
+    async function searchAbbreviation() {
+        const abbreviation = document.getElementById('searchInput').value.trim();
+        const searchButton = document.querySelector('.search-box button');
+        const resultSection = document.getElementById('searchResult');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+
+        if (!abbreviation) {
+            alert("Please enter an abbreviation");
+            return;
+        }
+
+        searchButton.disabled = true;
+        searchButton.textContent = 'Searching...';
+
+        try {
+            const response = await fetch(`http://localhost:8000/get_abbreviation/${abbreviation}`);
+            
+            if (!response.ok) {
+                const data = await response.json();
+                if (response.status === 404) {
+                    errorMessage.textContent = data.detail || 'Abbreviation not found.';
+                } else {
+                    errorMessage.textContent = 'Something went wrong. Please try again.';
+                }
+                errorMessage.style.display = 'block';
+                resultSection.style.display = 'none';
+            } else {
+                const data = await response.json();
+                document.getElementById('resultAbbreviation').textContent = data.abbreviation.toUpperCase();
+                document.getElementById('resultMeaning').textContent = data.meaning;
+                resultSection.style.display = 'block';
+            }
+        } catch (error) {
+            console.error("Error fetching abbreviation:", error);
+            errorMessage.textContent = 'Network error. Please check your connection and try again.';
+            errorMessage.style.display = 'block';
+            resultSection.style.display = 'none';
+        } finally {
+         
+            searchButton.disabled = false;
+            searchButton.textContent = 'Search';
+        }
+    }
+</script>
+</body>
+</html>
