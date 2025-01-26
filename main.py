@@ -30,7 +30,6 @@ app.add_middleware(
 
 def log_middleware(request: Request, call_next):
     start_time = time.time()
-     # Call the next middleware or route handler
     response = call_next(request)
     end_time = time.time()
 
