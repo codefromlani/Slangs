@@ -16,7 +16,7 @@ document.getElementById('submitForm').addEventListener('submit', async (e) => {
     submitButton.textContent = 'Submitting...';
 
     try {
-        const response = await fetch('http://localhost:8000/abbreviations', {  
+        const response = await fetch('/abbreviations', {  
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -73,7 +73,7 @@
         searchButton.textContent = 'Searching...';
 
         try {
-            const response = await fetch(`http://localhost:8000/get_abbreviation/${abbreviation}`);
+            const response = await fetch(`/get_abbreviation/${abbreviation}`);
             
             if (!response.ok) {
                 const data = await response.json();
