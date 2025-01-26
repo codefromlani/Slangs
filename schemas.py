@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 from enum import Enum
+from typing import Optional
 
 
 class UserCreate(BaseModel):
@@ -20,11 +21,18 @@ class AbbreviationEnum(str, Enum):
 class AbbreviationCreate(BaseModel):
     abbreviation: str
     meaning: str
-    status: AbbreviationEnum.PENDING
+    
+
+class AbbreviationUpdate(BaseModel):
+    abbreviation: Optional[str] = None
+    meaning: Optional[str] = None
+    status: Optional[AbbreviationEnum] = None
 
 
 class AbbreviationResponse(AbbreviationCreate):
+    id: int
     status: AbbreviationEnum
+
 
     class Config:
         from_attributes = True
