@@ -5,7 +5,7 @@ This project is a full-stack application where users can search, view and submit
 Technologies Used:
 
 - Backend: FastAPI
-- Database: SQLite
+- Database: PostgreSQL
 - Frontend: HTML, CSS, JavaScript
 - Database ORM: SQLAlchemy
 - Authentication (JWT): Admin-only access 
@@ -40,7 +40,7 @@ git clone https://github.com/codefromlani/Slangs.git
 2. Install dependencies:
 pip install -r requirements.txt
 3. Set up the database:
-Ensure that your database (SQLite) is configured and that the appropriate environment variables (if any) are set.
+Ensure that your database (PostgreSQL) is configured and that the appropriate environment variables (if any) are set.
 4. Run the FastAPI server:
 uvicorn main:app --reload
 
